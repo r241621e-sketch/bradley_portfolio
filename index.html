@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bradley Chinzou — Systems Architect Portfolio</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap (for responsive utilities & modals) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent: #ff6a00;
+      --accent-2: #ff8a3c;
+      --bg: #ffffff;
+      --muted: #6b7280;
+      --card-bg: rgba(255,255,255,0.72);
+      --glass-border: rgba(255,255,255,0.6);
+      --glass-shadow: 0 10px 30px rgba(17,17,17,0.06);
+      --max-width: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+    }
+
+    /* Reset / base */
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg,#ffffff 0%, #fbfbfb 100%);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding-bottom:48px;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Container */
+    .wrap{max-width:var(--max-width);margin:0 auto;padding:28px 20px;}
+
+    /* NAV */
+    nav.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{font-family:'Poppins', 'Inter', sans-serif;font-weight:700;font-size:1.05rem;display:flex;flex-direction:column;line-height:1}
+    .brand .sub{font-size:0.72rem;color:var(--muted);font-weight:500;margin-top:4px}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn-cta{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:10px;font-weight:600;box-shadow:0 6px 20px rgba(255,106,0,0.14);transition:transform .12s ease, box-shadow .12s ease}
+    .btn-ghost{border:1px solid rgba(15,23,36,0.06);padding:8px 12px;border-radius:10px;background:transparent;color:#111}
+
+    /* HERO */
+    .hero{display:flex;gap:24px;align-items:center;padding:36px 0}
+    .hero-left{flex:1}
+    .hero-right{width:360px;max-width:40%}
+    h1.title{font-family:'Poppins',sans-serif;font-size:2.1rem;margin:0 0 8px}
+    .lead{color:#111;font-weight:500;margin-bottom:14px}
+
+    /* Terminal typing */
+    .terminal {
+      font-family: var(--mono);
+      background: linear-gradient(180deg, rgba(2,6,23,0.02), rgba(2,6,23,0.00));
+      border-radius:10px;padding:10px 14px;border:1px solid rgba(2,6,23,0.04);
+      display:inline-block;color:#0b1220;font-size:0.95rem;
+    }
+    .typed { color: var(--accent); font-weight:700; }
+    .cursor { display:inline-block; width:8px; height:18px; background:var(--accent); margin-left:6px; vertical-align:middle; animation: blink 1s steps(2) infinite; border-radius:2px }
+    @keyframes blink { 50% { opacity:0 } }
+
+    /* Glass card */
+    .card-glass{
+      background: var(--card-bg);
+      border:1px solid var(--glass-border);
+      border-radius:14px;
+      box-shadow:var(--glass-shadow);
+      padding:18px;
+      transition: transform .16s ease, box-shadow .16s ease;
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+    .card-glass:hover{ transform: translateY(-6px); box-shadow:0 18px 48px rgba(15,23,36,0.10); }
+
+    /* Skills - sleek lines */
+    .skill-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .skill-name{font-weight:600}
+    .skill-track{height:10px;width:60%;background:#f3f4f6;border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 6px rgba(0,0,0,0.03)}
+    .skill-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 900ms cubic-bezier(.2,.9,.2,1);box-shadow:0 6px 18px rgba(255,106,0,0.12) inset}
+
+    /* Projects layout */
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:14px}
+    .project-card{
+      border-radius:12px;padding:14px;background:white;border:1px solid rgba(2,6,23,0.04);
+      transition: transform .18s ease, box-shadow .18s ease;
+      cursor:pointer; display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .project-card:hover{ transform: translateY(-8px) rotate(-0.2deg); box-shadow:0 18px 48px rgba(15,23,36,0.08); }
+    .project-title{font-weight:700;margin-bottom:6px}
+    .project-desc{color:var(--muted);font-size:0.95rem}
+
+    /* Modal styling - app window look */
+    .modal-backdrop.show{opacity:0.5;background:linear-gradient(180deg, rgba(5,6,8,0.55), rgba(5,6,8,0.35));}
+    .app-window .modal-content{
+      border-radius:12px;border:0;background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,250,250,0.94));
+      box-shadow:0 20px 60px rgba(2,6,23,0.12);
+      overflow:hidden;
+    }
+    .app-window .modal-header{
+      background:linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.6)); border-bottom:1px solid rgba(2,6,23,0.03);
+      padding:12px 16px;
+    }
+    .app-window .modal-title{font-weight:700}
+    .app-window .modal-body{padding:18px}
+    .app-window .app-topbar{display:flex;align-items:center;gap:8px}
+    .dot{width:12px;height:12px;border-radius:50%}
+    .dot.red{background:#ff5f56}
+    .dot.yellow{background:#ffbd2e}
+    .dot.green{background:#27c93f}
+    .app-window .modal-dialog{max-width:720px;transform: translateY(12px);opacity:0;transition:transform .36s cubic-bezier(.2,.9,.2,1),opacity .36s ease}
+    .modal.show .modal-dialog{transform: translateY(0);opacity:1}
+
+    /* Tiny utilities */
+    .muted{color:var(--muted)}
+    .small{font-size:0.85rem}
+    .center{display:flex;align-items:center;justify-content:center}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .projects-grid{grid-template-columns:repeat(2,1fr)}
+      .hero-right{display:none}
+    }
+    @media (max-width:640px){
+      .projects-grid{grid-template-columns:1fr}
+      .hero{flex-direction:column}
+      .wrap{padding-left:14px;padding-right:14px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- TOP BAR -->
+    <nav class="topbar" aria-label="Top navigation">
+      <div class="brand">
+        <span>Bradley <span style="color:var(--accent)">Chinzou</span></span>
+        <span class="sub">Systems Architect (aspiring) — Midlands State University</span>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn-ghost" href="#projects">Projects</a>
+        <a class="btn-ghost" href="#skills">Skills</a>
+        <a class="btn-cta" href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero" id="home" role="banner">
+      <div class="hero-left">
+        <h1 class="title">Hi, I'm <span style="color:var(--accent)">Bradley</span>.</h1>
+        <p class="lead">Computer Science student at <strong>Midlands State University</strong>, building resilient systems and clean, production-minded demos.</p>
+
+        <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
+          <div class="terminal" aria-hidden="true">
+            <span style="color:#374151">➜</span>&nbsp;<span class="small muted">I build</span>&nbsp;<span class="typed" id="typedArea"></span><span class="cursor" aria-hidden="true"></span>
+          </div>
+
+          <div style="margin-left:8px">
+            <a class="btn-cta" href="#projects">See projects</a>
+          </div>
+        </div>
+
+        <p class="muted small" style="margin-top:12px">Looking for internships — available for remote and in-person roles. Portfolio is a single-file demo ready for GitHub Pages.</p>
+      </div>
+
+      <div class="hero-right">
+        <div class="card-glass">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-weight:700;font-size:1.02rem">Bradley Chinzou</div>
+              <div class="muted small" style="margin-top:6px">Computer Science • Midlands State University</div>
+            </div>
+            <div class="small muted" style="text-align:right">
+              <div>Availability</div>
+              <div style="margin-top:6px;font-weight:600;color:var(--accent)">Open</div>
+            </div>
+          </div>
+
+          <hr style="margin-top:12px;border:none;border-top:1px solid rgba(2,6,23,0.04)">
+
+          <div style="margin-top:8px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <div style="background:linear-gradient(90deg,#fff,#fff);padding:6px 8px;border-radius:999px;border:1px solid rgba(2,6,23,0.04);font-weight:600">Systems Design</div>
+              <div style="background:linear-gradient(90deg,#fff,#fff);padding:6px 8px;border-radius:999px;border:1px solid rgba(2,6,23,0.04);font-weight:600">Full-stack</div>
+              <div style="background:linear-gradient(90deg,#fff,#fff);padding:6px 8px;border-radius:999px;border:1px solid rgba(2,6,23,0.04);font-weight:600">Security</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ABOUT + SKILLS -->
+    <section id="about" aria-labelledby="aboutHeading" style="margin-top:18px">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:18px">
+        <div class="card-glass">
+          <h3 id="aboutHeading" style="margin-bottom:8px">About</h3>
+          <p class="muted">I’m Bradley — a CS student at Midlands State University. I focus on system analysis, reliable backend systems, and pragmatic frontend that supports solid architecture. I prefer small, working projects that show end-to-end thinking.</p>
+
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <div style="font-weight:700;color:var(--accent)">Studying:</div>
+            <div class="muted">System Analysis & Design, Databases, Computer Security</div>
+          </div>
+        </div>
+
+        <!-- Skills card -->
+        <aside class="card-glass">
+          <h5 style="margin-bottom:12px">Skills</h5>
+
+          <div style="margin-bottom:10px">
+            <div class="skill-row">
+              <div class="skill-name">HTML</div><div class="muted small">90%</div>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-val="90"></div></div>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="skill-row">
+              <div class="skill-name">CSS</div><div class="muted small">85%</div>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-val="85"></div></div>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="skill-row">
+              <div class="skill-name">JavaScript</div><div class="muted small">80%</div>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-val="80"></div></div>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="skill-row">
+              <div class="skill-name">Python</div><div class="muted small">75%</div>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-val="75"></div></div>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="skill-row">
+              <div class="skill-name">SQL</div><div class="muted small">70%</div>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-val="70"></div></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" style="margin-top:26px">
+      <h3 style="margin-bottom:6px">Projects</h3>
+      <p class="muted small" style="margin-top:0">Three focused demos — click a card to open as a mini app window.</p>
+
+      <div class="projects-grid" style="margin-top:12px">
+        <!-- Calculator -->
+        <div class="project-card" data-bs-toggle="modal" data-bs-target="#calcModal" role="button" tabindex="0" aria-label="Open Calculator">
+          <div>
+            <div class="project-title">Simple Calculator</div>
+            <div class="project-desc">Safe numeric calculator — tidy UI, evaluated locally.</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+            <div style="font-weight:700;color:var(--accent)">Open</div>
+            <div class="muted small">— Basic ops</div>
+          </div>
+        </div>
+
+        <!-- To-do -->
+        <div class="project-card" data-bs-toggle="modal" data-bs-target="#todoModal" role="button" tabindex="0" aria-label="Open To Do">
+          <div>
+            <div class="project-title">To-Do List</div>
+            <div class="project-desc">LocalStorage-backed tasks for quick notes and demos.</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+            <div style="font-weight:700;color:var(--accent)">Open</div>
+            <div class="muted small">— Persistent</div>
+          </div>
+        </div>
+
+        <!-- Quiz -->
+        <div class="project-card" data-bs-toggle="modal" data-bs-target="#quizModal" role="button" tabindex="0" aria-label="Open Quiz">
+          <div>
+            <div class="project-title">Quiz App</div>
+            <div class="project-desc">Short, multiple-choice knowledge check — instant scoring.</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+            <div style="font-weight:700;color:var(--accent)">Open</div>
+            <div class="muted small">— Practice</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="margin-top:26px">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:18px">
+        <div class="card-glass">
+          <h3>Contact</h3>
+          <p class="muted">Send a short message. Form uses EmailJS — replace the placeholders in the script near the bottom.</p>
+
+          <form id="contactForm" style="margin-top:12px">
+            <div style="display:flex;gap:8px">
+              <input name="from_name" class="form-control" placeholder="Your name" required>
+              <input name="reply_to" type="email" class="form-control" placeholder="you@example.com" required>
+            </div>
+            <textarea name="message" class="form-control" rows="4" placeholder="Message..." style="margin-top:10px" required></textarea>
+
+            <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+              <button class="btn-cta" type="submit">Send message</button>
+              <div id="contactStatus" class="muted small"></div>
+            </div>
+          </form>
+        </div>
+
+        <aside class="card-glass">
+          <h5>Availability & Links</h5>
+          <div style="margin-top:8px" class="muted">
+            <div><strong>Location:</strong> Midlands, Zimbabwe</div>
+            <div style="margin-top:6px"><strong>Open to:</strong> Internships, freelance, mentorship</div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn-ghost" href="cv.pdf" download>Download CV</a>
+              <a class="btn-ghost" href="#projects">Portfolio</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <footer style="margin-top:28px;text-align:center;color:var(--muted);font-size:0.9rem">
+      <div style="height:6px;background:linear-gradient(90deg, rgba(255,106,0,0.9), rgba(255,140,50,0.9));width:80px;margin:0 auto;border-radius:999px"></div>
+      <div style="margin-top:10px">© <span id="year">2025</span> Bradley Chinzou — Computer Science Student, MSU</div>
+    </footer>
+  </div>
+
+  <!-- Modals (app windows) -->
+
+  <!-- Calculator Modal -->
+  <div class="modal fade app-window" id="calcModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="app-topbar">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          </div>
+          <h5 class="modal-title">Calculator</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <input id="calcScreen" class="form-control form-control-lg" value="0" readonly aria-label="Calculator display">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+              <button class="btn btn-outline-secondary calc-key" data-val="7">7</button>
+              <button class="btn btn-outline-secondary calc-key" data-val="8">8</button>
+              <button class="btn btn-outline-secondary calc-key" data-val="9">9</button>
+              <button class="btn btn-accent calc-op" data-op="/">÷</button>
+
+              <button class="btn btn-outline-secondary calc-key" data-val="4">4</button>
+              <button class="btn btn-outline-secondary calc-key" data-val="5">5</button>
+              <button class="btn btn-outline-secondary calc-key" data-val="6">6</button>
+              <button class="btn btn-accent calc-op" data-op="*">×</button>
+
+              <button class="btn btn-outline-secondary calc-key" data-val="1">1</button>
+              <button class="btn btn-outline-secondary calc-key" data-val="2">2</button>
+              <button class="btn btn-outline-secondary calc-key" data-val="3">3</button>
+              <button class="btn btn-accent calc-op" data-op="-">−</button>
+
+              <button class="btn btn-outline-secondary calc-key" data-val="0">0</button>
+              <button class="btn btn-outline-secondary calc-key" data-val=".">.</button>
+              <button class="btn btn-outline-danger" id="calcClr">C</button>
+              <button class="btn btn-accent" id="calcExec">=</button>
+            </div>
+            <div class="muted small">Safe evaluation — accepts numbers and basic operators only.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- To-do Modal -->
+  <div class="modal fade app-window" id="todoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="app-topbar">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          </div>
+          <h5 class="modal-title">To-Do</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:8px">
+              <input id="todoInput" class="form-control" placeholder="New task">
+              <button id="todoAdd" class="btn-cta">Add</button>
+            </div>
+            <ul id="todoList" class="list-group" style="max-height:260px;overflow:auto"></ul>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="muted small">Tasks are stored locally in your browser.</div>
+              <div>
+                <button id="todoClearAll" class="btn btn-outline-danger btn-sm">Clear all</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div class="modal fade app-window" id="quizModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="app-topbar">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          </div>
+          <h5 class="modal-title">Quick Quiz</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="quizArea" style="display:flex;flex-direction:column;gap:10px"></div>
+          <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+            <button id="quizStart" class="btn-cta">Start</button>
+            <button id="quizSubmit" class="btn-ghost" disabled>Submit</button>
+            <div id="quizFeedback" class="muted small"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Script — interactions -->
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* Typing effect (terminal-like) */
+    (function(){
+      const phrases = ['web apps', 'system designs', 'scalable backends', 'clean code', 'secure systems'];
+      const el = document.getElementById('typedArea');
+      let pi=0, ci=0, forward=true;
+      function tick(){
+        const p = phrases[pi];
+        if(forward){
+          ci++;
+          el.textContent = p.slice(0,ci);
+          if(ci === p.length){ forward=false; setTimeout(tick,900); return; }
+        } else {
+          ci--;
+          el.textContent = p.slice(0,ci);
+          if(ci === 0){ forward=true; pi=(pi+1)%phrases.length; setTimeout(tick,200); return; }
+        }
+        setTimeout(tick, 60);
+      }
+      tick();
+    })();
+
+    /* Skill bar animation */
+    (function(){
+      const fills = document.querySelectorAll('.skill-fill');
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(en=>{
+          if(en.isIntersecting){
+            const f = en.target;
+            const v = f.getAttribute('data-val') || 0;
+            f.style.width = v + '%';
+            io.unobserve(f);
+          }
+        });
+      }, {threshold:0.2});
+      fills.forEach(f=>io.observe(f));
+    })();
+
+    /* Project interactions: keyboard activation for cards */
+    (function(){
+      document.querySelectorAll('.project-card').forEach(card=>{
+        card.addEventListener('keydown',(e)=>{
+          if(e.key === 'Enter' || e.key === ' ') card.click();
+        });
+      });
+    })();
+
+    /* ============================
+       Calculator logic (safe evaluator)
+       ============================ */
+    (function(){
+      const display = document.getElementById('calcScreen');
+      let expr = '';
+
+      function setDisp(v){ display.value = v || '0'; }
+
+      document.querySelectorAll('.calc-key').forEach(btn=>{
+        btn.addEventListener('click', ()=> {
+          expr += btn.dataset.val;
+          setDisp(expr);
+        });
+      });
+
+      document.querySelectorAll('.calc-op').forEach(btn=>{
+        btn.addEventListener('click', ()=> {
+          if(!expr) return;
+          // prevent double-ops
+          if(/[+\-*/]$/.test(expr)) expr = expr.slice(0,-1);
+          expr += btn.dataset.op;
+          setDisp(expr);
+        });
+      });
+
+      document.getElementById('calcClr').addEventListener('click', ()=>{
+        expr = '';
+        setDisp('0');
+      });
+
+      document.getElementById('calcExec').addEventListener('click', ()=>{
+        if(!expr) return;
+        if(!/^[0-9.\+\-\*\/() ]+$/.test(expr)) { setDisp('Error'); expr=''; return; }
+        try {
+          const result = Function('"use strict";return ('+expr+')')();
+          setDisp(String(Number(result)));
+          expr = String(Number(result));
+        } catch(e){ setDisp('Error'); expr=''; }
+      });
+
+      // reset when modal closes
+      document.getElementById('calcModal').addEventListener('hidden.bs.modal', ()=> { expr=''; setDisp('0'); });
+    })();
+
+    /* ============================
+       To-Do (localStorage)
+       ============================ */
+    (function(){
+      const key = 'bradley_portfolio_todos_v1';
+      let tasks = JSON.parse(localStorage.getItem(key) || '[]');
+      const input = document.getElementById('todoInput');
+      const addBtn = document.getElementById('todoAdd');
+      const list = document.getElementById('todoList');
+      const clearAll = document.getElementById('todoClearAll');
+
+      function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+      function render(){
+        list.innerHTML = '';
+        tasks.forEach((t,i)=>{
+          const li = document.createElement('li');
+          li.className = 'list-group-item d-flex justify-content-between align-items-center';
+          li.innerHTML = '<div style="max-width:80%">'+escapeHtml(t)+'</div><div><button class="btn btn-sm btn-outline-danger">Del</button></div>';
+          li.querySelector('button').addEventListener('click', ()=> {
+            tasks.splice(i,1); save();
+          });
+          list.appendChild(li);
+        });
+      }
+
+      function save(){
+        localStorage.setItem(key, JSON.stringify(tasks));
+        render();
+      }
+
+      addBtn.addEventListener('click', ()=>{
+        const v = input.value.trim();
+        if(!v) return;
+        tasks.push(v);
+        input.value = '';
+        save();
+      });
+
+      input.addEventListener('keydown', e=>{ if(e.key === 'Enter'){ e.preventDefault(); addBtn.click(); } });
+
+      clearAll.addEventListener('click', ()=>{
+        if(!confirm('Clear all tasks?')) return;
+        tasks = [];
+        save();
+      });
+
+      // render whenever modal opens (in case changed elsewhere)
+      const todoModal = document.getElementById('todoModal');
+      todoModal.addEventListener('shown.bs.modal', ()=> render());
+
+      // initial render
+      render();
+    })();
+
+    /* ============================
+       Quiz (modal)
+       ============================ */
+    (function(){
+      const quizBtn = document.getElementById('quizStart');
+      const submitBtn = document.getElementById('quizSubmit');
+      const area = document.getElementById('quizArea');
+      const feedback = document.getElementById('quizFeedback');
+
+      const questions = [
+        {q:'What does "scalability" mean in system design?', choices:['Adapt to changing needs', 'Increase capacity under load', 'Run on mobile devices'], a:1},
+        {q:'Which stores structured data?', choices:['Load balancer','Database','Web server'], a:1},
+        {q:'Primary goal of high availability?', choices:['Low latency only','Minimal downtime','Smaller codebase'], a:1}
+      ];
+
+      function renderQuiz(){
+        area.innerHTML = '';
+        questions.forEach((qq,idx)=>{
+          const d = document.createElement('div');
+          d.className = 'mb-2';
+          let html = '<div style="font-weight:700;margin-bottom:6px">Q'+(idx+1)+'. '+qq.q+'</div>';
+          qq.choices.forEach((ch,ci)=>{
+            html += '<div class="form-check"><input class="form-check-input" type="radio" name="q'+idx+'" id="q'+idx+'c'+ci+'" value="'+ci+'"><label class="form-check-label" for="q'+idx+'c'+ci+'">'+ch+'</label></div>';
+          });
+          d.innerHTML = html;
+          area.appendChild(d);
+        });
+      }
+
+      quizBtn.addEventListener('click', ()=>{
+        renderQuiz();
+        submitBtn.disabled = false;
+        feedback.textContent = 'Answer all then submit.';
+      });
+
+      submitBtn.addEventListener('click', ()=>{
+        let score=0, answered=0;
+        for(let i=0;i<questions.length;i++){
+          const sel = document.querySelector('input[name="q'+i+'"]:checked');
+          if(sel){ answered++; if(Number(sel.value) === questions[i].a) score++; }
+        }
+        if(answered < questions.length){ feedback.textContent = `Answered ${answered}/${questions.length} — please complete.`; return; }
+        feedback.textContent = 'Score: '+score+'/'+questions.length + (score===questions.length? ' — Perfect!' : (score>=2? ' — Well done' : ' — Keep learning'));
+      });
+
+      // reset on close
+      const quizModal = document.getElementById('quizModal');
+      quizModal.addEventListener('hidden.bs.modal', ()=> {
+        area.innerHTML = '';
+        submitBtn.disabled = true;
+        feedback.textContent = '';
+      });
+    })();
+
+    /* ============================
+       EmailJS Contact form
+       ============================
+       Replace:
+         - 'YOUR_PUBLIC_KEY' with your EmailJS public key
+         - 'YOUR_SERVICE_ID' with your EmailJS service id
+         - 'YOUR_TEMPLATE_ID' with your EmailJS template id
+    ============================ */
+    (function(){
+      const status = document.getElementById('contactStatus');
+      try {
+        if(window.emailjs) emailjs.init('YOUR_PUBLIC_KEY');
+      } catch(e){ console.warn('EmailJS init failed', e); }
+
+      const form = document.getElementById('contactForm');
+      form.addEventListener('submit', function(evt){
+        evt.preventDefault();
+        status.textContent = 'Sending...';
+        // keep simple: sendForm(form)
+        if(!window.emailjs){
+          status.textContent = 'EmailJS not loaded — replace placeholders to enable sending.';
+          return;
+        }
+        emailjs.sendForm('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID', this)
+        .then(()=>{ status.textContent = 'Message sent — thank you!'; form.reset(); })
+        .catch(err=>{ console.error('EmailJS error', err); status.textContent = 'Error sending message. Check IDs & network.'; });
+      });
+    })();
+
+    /* Accessibility enhancements: allow focus and activation on cards */
+    (function(){
+      document.querySelectorAll('.project-card').forEach(card=>{
+        card.addEventListener('keypress', e=>{ if(e.key === 'Enter') card.click(); });
+      });
+    })();
+  </script>
+</body>
+</html>
